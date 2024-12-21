@@ -24,25 +24,15 @@ int main(int argc, char *argv[])
 
 
     BYTE buffer[512];
-    bool found_jpg = false;
     char jpg_name [8];
     FILE  *outFile = NULL;
     int counter= 0;
-
 
 
     while(fread(buffer , sizeof(BYTE) , 512 , card)  == 512)
     {
         if ( buffer[0] == 0xff && buffer[1] == 0xd8 && buffer[2] == 0xff && (buffer[3] & 0xf0) == 0xe0)
         {
-            if(found_jpg)
-            {
-                fclose(outFile);
-            }
-            else
-            {
-                found_jpg = true;
-            }
 
             sprintf( jpg_name , "%03d.jgp" , counter);
             outFile = fopen(jpg_name , "wb");
@@ -52,21 +42,15 @@ int main(int argc, char *argv[])
                 fclose(outFile);
                 printf("could not create the file %s" , jpg_name);
             }
-
-            if(found_jpg)
+            else
             {
-                fwrite( buffer , sizeof(BYTE) , 512 , outFile );
+                fwrite(buffer , sizeof(BYTE) , 512 , outFile);
+                fclose(outFile);
             }
 
             counter++;
         }
     }
-
-    if(found_jpg)
-    {
-        fclose(outFile);
-    }
-
     fclose(card);
     return 0;
 }

@@ -19,47 +19,22 @@ int FindNumber (int number , int* numbers , int NumSize)
 
 int findSpecialInteger(int* arr, int arrSize) {
 
-    int Numbers[arrSize];
-    int counter[arrSize];
+    int maxArrSize = 100001;
+    int counter[maxArrSize];
     int quarter = arrSize / 4;
-    int CurrentNumber;
-    int ElmentsinArray = 0;
-    int BiggestNubmer = 0;
 
-    memset(Numbers , -1 , arrSize*sizeof(int));
-    memset(counter , 0 , arrSize*sizeof(int));
+    memset(counter , 0 , maxArrSize*sizeof(int));
 
     for( int i = 0; i < arrSize; i++)
     {
-        if(FindNumber(arr[i] , Numbers , arrSize) == -1)
-        {
-             Numbers[ElmentsinArray] = arr[i];
-             counter[ElmentsinArray]++;
-             ElmentsinArray++;
-        }
-        else
-        {
-        int index = FindNumber(arr[i] , Numbers , arrSize);
-        counter[index]++;
-        }
+         ++counter[arr[i]];
+         if (counter[arr[i]] > quarter)
+             return arr[i];
     }
+    return -1;
+}
 
-    for( int i = 0; i < ElmentsinArray; i++)
-    {
-        if(counter[i] > BiggestNubmer)
-        {
-            BiggestNubmer = counter[i];
-        }                 
-    }
+int main()
+{
 
-    
-
-    if ( BiggestNubmer > quarter)
-    {
-        return Numbers[FindNumber(BiggestNubmer , counter , ElmentsinArray)];
-    }
-    else
-    {
-        return 0;
-    }  
 }
